@@ -27,6 +27,10 @@ app.get("/pdf-generator", async (req, res) => {
       format: "ticket_caisse",
       params: ["id_t",],
     },
+    {
+      format: "font1",
+      params: ["contrat_id",],
+    },
   ];
 
   let makeRequestForPDF = true;
