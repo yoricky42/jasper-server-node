@@ -110,7 +110,7 @@ app.get("/pdf-generator", async (req, res) => {
     res.send(
       formatExist
         ? error
-        : "Ce type de format n'existe pas : " + req.query["reportFormat"]
+        : `Server listening on Port : ${port} | IP address : ${IP.address()} | ERROR : format inexistant` + req.query["reportFormat"]
     );
   }
 });
