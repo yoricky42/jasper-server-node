@@ -23,5 +23,8 @@ RUN npm install
 # Copy handler function and tsconfig
 COPY . /app
 
+# Expose app
+EXPOSE 5400
+
 # Run app
 CMD ["npm", "start"]
