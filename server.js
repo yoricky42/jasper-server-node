@@ -46,12 +46,12 @@ app.get("/pdf-generator", async (req, res) => {
   let reqToken = "";
   let error =
     "Erreur :  paramètre pour le format id= " +
-    req.query.reportFormat_id.toString().toUpperCase() +
+    req.query.reportFormat_id?.toString().toUpperCase() +
     " - Parametre manquant ==>";
 
   const hostExist = reportFormat_id.find((el) => el.host === req.query["host"]);
-  const formatExist = [hostExist].find(
-    (el) => el.format === req.query["reportFormat_id"]
+  const formatExist = [hostExist]?.find(
+    (el) => el?.format === req.query["reportFormat_id"]
   );
 
   if (!hostExist) {
