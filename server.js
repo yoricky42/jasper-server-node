@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
-const IP = "hoballahome.com";
+const IP = require("ip").address();
 
 const app = express();
 
