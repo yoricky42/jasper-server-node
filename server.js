@@ -31,7 +31,7 @@ app.get("/pdf-generator", async (req, res) => {
       format: "Font1",
       params: ["contrat_id"],
       host:"hoballahome",
-      ip_host:""
+      ip_host:"80.240.29.46"
     },
   ];
 
@@ -129,7 +129,7 @@ app.get("/pdf-generator", async (req, res) => {
       });
   } else {
     res.send(
-      hostExist ? 'Params "HOST" on url is missing ' : 
+      hostExist ? 'Params "host" on url is missing ' : 
       formatExist ? error : 
       `Server listening on Port : ${port} | IP address : ${IP} | ERROR : format ` +req.query["reportFormat"]
     );
