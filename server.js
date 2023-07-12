@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
-const IP = require('ip');
+const IP = "hoballahome.com";
 
 const app = express();
 
@@ -21,20 +21,20 @@ app.get("/pdf-generator", async (req, res) => {
     },
     {
       format: "hoballa_report",
-      params: ["id_c",],
+      params: ["id_c"],
     },
     {
       format: "ticket_caisse",
-      params: ["id_t",],
+      params: ["id_t"],
     },
     {
-      format: "font1",
-      params: ["contrat_id",],
+      format: "Font1",
+      params: ["contrat_id"],
     },
   ];
 
   let makeRequestForPDF = true;
-  let reqToSendIs = `http://${IP.address()}:8080/jasperserver/rest_v2/reports/reports/`;
+  let reqToSendIs = `http://${IP}:8080/jasperserver/rest_v2/reports/reports/`;
   let error =
     "ERREUR PARAMETRE POUR " +
     req.query.reportFormat +
@@ -68,7 +68,9 @@ app.get("/pdf-generator", async (req, res) => {
   );
 
   if (makeRequestForPDF && formatExist) {
-    const browser = await puppeteer.launch({ headless: true, timeout: 0});
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
     const page = await browser.newPage();
     await page.setViewport({
       width: 1440,
@@ -78,18 +80,18 @@ app.get("/pdf-generator", async (req, res) => {
 
     await page
       .goto(
-        `http://${IP.address()}:8080/jasperserver/rest_v2/login?j_username=jasperadmin&j_password=jasperadmin`,
+        `http://${IP}:8080/jasperserver/rest_v2/login?j_username=jasperadmin&j_password=jasperadmin`,
         { waitUntil: "networkidle0" }
       )
       .then(() => page.goto(reqToSendIs, { waitUntil: "networkidle0" }));
-    
-      await page.emulateMediaType("print");
-      await page.addStyleTag({
-        content: `body{ 
+
+    await page.emulateMediaType("print");
+    await page.addStyleTag({
+      content: `body{ 
                     margin:0;
                     padding:0;
                   }`,
-      });
+    });
 
     const ItemToGetInPDF = await page.$(".jrPage>tbody");
     const rectItemToGetInPDF = await page.evaluate((info) => {
@@ -103,7 +105,7 @@ app.get("/pdf-generator", async (req, res) => {
         path: `pdf.pdf`,
         width: rectItemToGetInPDF.width,
         height: rectItemToGetInPDF.height,
-        margin:0,
+        margin: 0,
         printBackground: true,
       })
       .then(async (pdf) => {
@@ -114,11 +116,14 @@ app.get("/pdf-generator", async (req, res) => {
     res.send(
       formatExist
         ? error
-        : `Server listening on Port : ${port} | IP address : ${IP.address()} | ERROR : format ` + req.query["reportFormat"]
+        : `Server listening on Port : ${port} | IP address : ${IP} | ERROR : format ` +
+            req.query["reportFormat"]
     );
   }
 });
 
 app.listen(process.env.PORT || port, async () => {
-  console.log(`Server listening on Port : ${port} | IP address : ${IP.address()}`);
+  console.log(
+    `Server listening on Port : ${port} | IP address : ${IP}`
+  );
 });

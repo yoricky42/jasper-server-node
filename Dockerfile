@@ -1,10 +1,30 @@
-FROM node:18
+# Filename: Dockerfile
+FROM node:slim
+
+# Install Google Chrome Stable and fonts
+# Note: this installs the necessary libs to make the browser work with Puppeteer.
+RUN apt-get update && apt-get install gnupg wget -y && \
+    wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
+    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+    apt-get update && \
+    apt-get install google-chrome-stable -y --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
+
+
+# Create working directory
 WORKDIR /app
+
+# Copy package.json
 COPY package.json /app
-RUN apt update -y && \
-    apt upgrade -y && \
-    apt install sudo && \
-    sudo apt-get install ca-certificates fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget xdg-utils \
-    npm install
+
+# Install NPM dependencies for function
+RUN npm install
+
+# Copy handler function and tsconfig
 COPY . /app
+
+# Expose app
+EXPOSE 9000
+
+# Run app
 CMD ["npm", "start"]
