@@ -30,11 +30,22 @@ app.get("/pdf-generator", async (req, res) => {
     {
       format: "Font1",
       params: ["contrat_id"],
+      host:"hoballahome",
+      ip_host:""
     },
   ];
 
   let makeRequestForPDF = true;
-  let reqToSendIs = `http://${IP}:8080/jasperserver/rest_v2/reports/reports/`;
+  let reqToSendIs = ""
+  let reqToken = ""
+
+  reportFormat.forEach((el)=>{
+    if(el.host === req.query["host"]){
+      reqToSendIs = `http://${el.ip_host}:8080/jasperserver/rest_v2/reports/reports/`;
+      reqToken = `http://${el.ip_host}:8080/jasperserver/rest_v2/login?j_username=jasperadmin&j_password=jasperadmin`
+    }
+  })
+
   let error =
     "ERREUR PARAMETRE POUR " +
     req.query.reportFormat +
@@ -67,7 +78,11 @@ app.get("/pdf-generator", async (req, res) => {
     (el) => el.format === req.query["reportFormat"]
   );
 
-  if (makeRequestForPDF && formatExist) {
+  const hostExist = reportFormat.find(
+    (el) => el.host === req.query["host"]
+  );
+
+  if (makeRequestForPDF && formatExist && hostExist) {
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
@@ -80,7 +95,7 @@ app.get("/pdf-generator", async (req, res) => {
 
     await page
       .goto(
-        `http://${IP}:8080/jasperserver/rest_v2/login?j_username=jasperadmin&j_password=jasperadmin`,
+        reqToken,
         { waitUntil: "networkidle0" }
       )
       .then(() => page.goto(reqToSendIs, { waitUntil: "networkidle0" }));
@@ -114,10 +129,7 @@ app.get("/pdf-generator", async (req, res) => {
       });
   } else {
     res.send(
-      formatExist
-        ? error
-        : `Server listening on Port : ${port} | IP address : ${IP} | ERROR : format ` +
-            req.query["reportFormat"]
+      formatExist ? error  : hostExist ? 'Params "HOST" on url is missing ': `Server listening on Port : ${port} | IP address : ${IP} | ERROR : format ` +req.query["reportFormat"]
     );
   }
 });
