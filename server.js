@@ -129,7 +129,7 @@ app.get("/pdf-generator", async (req, res) => {
       });
   } else {
     res.send(
-      formatExist ? error  : hostExist ? 'Params "HOST" on url is missing ': `Server listening on Port : ${port} | IP address : ${IP} | ERROR : format ` +req.query["reportFormat"]
+      formatExist ? error  : !hostExist ? 'Params "HOST" on url is missing ' : `Server listening on Port : ${port} | IP address : ${IP} | ERROR : format ` +req.query["reportFormat"]
     );
   }
 });
