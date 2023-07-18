@@ -7,7 +7,7 @@ const IP = require("ip").address();
 
 const app = express();
 
-const port = 5400;
+const port = 5500;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -144,14 +144,14 @@ app.get("/pdf-generator", async (req, res) => {
         deviceScaleFactor: 1,
       });
 
-      console.log('======= initialization ========')
+      console.log('======= initialization ======== | ',reqToken)
   
       await page
         .goto(
           reqToken,
           { waitUntil: "networkidle0" }
         )
-        .then(()=> console.log('======= Tocken initialized ========'))
+        .then(()=> console.log('======= Tocken initialized ======== | ',reqToSendIs))
         .then(() => page.goto(reqToSendIs, { waitUntil: "networkidle0" }))
         .then(()=> console.log('======= in jreport ======='))
   
