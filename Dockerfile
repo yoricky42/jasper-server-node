@@ -1,5 +1,5 @@
 # Filename: Dockerfile
-FROM node:slim
+FROM ghcr.io/puppeteer/puppeteer:latest
 
 # Install Google Chrome Stable and fonts
 # Note: this installs the necessary libs to make the browser work with Puppeteer.

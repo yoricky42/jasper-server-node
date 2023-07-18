@@ -133,7 +133,7 @@ app.get("/pdf-generator", async (req, res) => {
 
     if (makeRequestForPDF && formatExist && hostExist) {
       const browser = await puppeteer.launch({
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        args: [],
       });
       const page = await browser.newPage();
       await page.setViewport({
