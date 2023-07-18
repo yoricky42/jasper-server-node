@@ -143,6 +143,8 @@ app.get("/pdf-generator", async (req, res) => {
         height: 1080,
         deviceScaleFactor: 1,
       });
+
+      console.log('======= initialization ========')
   
       await page
         .goto(
