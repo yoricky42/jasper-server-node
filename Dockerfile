@@ -4,7 +4,7 @@ USER root
 
 # Install Google Chrome Stable and fonts
 # Note: this installs the necessary libs to make the browser work with Puppeteer.
-RUN yum install node
+RUN apk add nodejs npm
 # Create working directory
 WORKDIR /app
 
