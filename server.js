@@ -149,7 +149,9 @@ app.get("/pdf-generator", async (req, res) => {
           reqToken,
           { waitUntil: "networkidle0" }
         )
-        .then(() => page.goto(reqToSendIs, { waitUntil: "networkidle0" }));
+        .then(()=> console.log('======= Tocken initialized ========'))
+        .then(() => page.goto(reqToSendIs, { waitUntil: "networkidle0" }))
+        .then(()=> console.log('======= in jreport ======='))
   
       await page.emulateMediaType("print");
       await page.addStyleTag({
