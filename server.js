@@ -7,7 +7,7 @@ const IP = require("ip").address();
 
 const app = express();
 
-const port = 5500;
+const port = 5400;
 
 app.use(bodyParser.json());
 app.use(cors());
