@@ -37,7 +37,7 @@ app.get("/pdf-generator", async (req, res) => {
       format: "Font1",
       params: ["contrat_id"],
       host: "hoballahome",
-      ip_host: "80.240.29.46",
+      ip_host: "172.17.0.2",
     },
   ];
 
