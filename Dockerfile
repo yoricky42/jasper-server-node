@@ -5,7 +5,7 @@ FROM ghcr.io/puppeteer/puppeteer:latest
 # Note: this installs the necessary libs to make the browser work with Puppeteer.
 RUN apt update -y && \
     apt upgrade -y && \
-    apt install sudo &&
+    apt install sudo
 
 RUN apt install gnupg wget -y && \
     sudo wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
