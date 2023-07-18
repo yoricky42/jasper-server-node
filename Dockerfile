@@ -1,5 +1,5 @@
 # Filename: Dockerfile
-FROM ghcr.io/puppeteer/puppeteer:latest
+FROM linuxserver/chromium:latest
 USER root
 
 # Install Google Chrome Stable and fonts
